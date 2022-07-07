@@ -5,7 +5,7 @@ import json
 import random
 
 from google.cloud import secretmanager
-import  google_crc32c
+import google_crc32c
 
 from jose import jwk
 from datetime import datetime
