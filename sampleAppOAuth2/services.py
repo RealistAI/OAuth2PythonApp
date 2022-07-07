@@ -3,6 +3,8 @@ import base64
 import json
 import random
 
+from google.cloud import secretmanager
+
 from jose import jwk
 from datetime import datetime
 
@@ -72,6 +74,20 @@ def getBearerTokenFromRefreshToken(refresh_Token):
     return Bearer(bearer_raw['x_refresh_token_expires_in'], bearer_raw['access_token'], bearer_raw['token_type'],
                   bearer_raw['refresh_token'], bearer_raw['expires_in'], idToken=idToken)
 
+
+def get_invoices(access_token, realmId):
+    auth_header = 'Bearer ' + access_token
+    headers = {'Accept': 'application/json', 'Authorization': auth_header, 'accept': 'application/json'}
+    sql_statement = 'select * from Invoice'
+    route = '/v3/company/{realmId}/query?query={sql_statement}&minorversion=65'
+    r = requests.get(settings.SANDBOX_QBO_BASEURL + route, headers=headers)
+    status_code = r.status_code
+    if status_code != 200:
+        response = ''
+        return response, status_code
+    response = json.loads(r.text)
+    return response,status_code
+    
 
 def getUserProfile(access_token):
     auth_header = 'Bearer ' + access_token
@@ -149,3 +165,97 @@ def getRandomString(length, allowed_chars='abcdefghijklmnopqrstuvwxyz' 'ABCDEFGH
 def getSecretKey():
     chars = 'abcdefghijklmnopqrstuvwxyz0123456789'
     return getRandomString(40, chars)
+
+def create_secret(project_id, secret_id):
+    """
+    Create a new secret with the given name. A secret is a logical wrapper
+    around a collection of secret versions. Secret versions hold the actual
+    secret material.
+    """
+
+    # Create the Secret Manager client.
+    client = secretmanager.SecretManagerServiceClient()
+
+    # Build the resource name of the parent project.
+    parent = f"projects/{project_id}"
+
+    # Create the secret.
+    response = client.create_secret(
+        request={
+            "parent": parent,
+            "secret_id": secret_id,
+            "secret": {"replication": {"automatic": {}}},
+        }
+    )
+
+    # Print the new secret name.
+    print("Created secret: {}".format(response.name))
+
+def add_secret_version(project_id, secret_id, payload):
+    """
+    Add a new secret version to the given secret with the provided payload.
+    """
+
+    # Create the Secret Manager client.
+    client = secretmanager.SecretManagerServiceClient()
+
+    # Build the resource name of the parent secret.
+    parent = client.secret_path(project_id, secret_id)
+
+    # Convert the string payload into a bytes. This step can be omitted if you
+    # pass in bytes instead of a str for the payload argument.
+    payload = payload.encode("UTF-8")
+
+    # Calculate payload checksum. Passing a checksum in add-version request
+    # is optional.
+    crc32c = google_crc32c.Checksum()
+    crc32c.update(payload)
+
+    # Add the secret version.
+    response = client.add_secret_version(
+        request={
+            "parent": parent,
+            "payload": {"data": payload, "data_crc32c": int(crc32c.hexdigest(), 16)},
+        }
+    )
+
+    # Print the new secret version name.
+    print("Added secret version: {}".format(response.name))
+
+def access_secret_version(secret_id):
+    """
+    Access the payload for the given secret version if one exists. The version
+    can be a version number as a string (e.g. "5") or an alias (e.g. "latest").
+    """
+    project_id = 'michael-gilbert-dev'
+    # Create the Secret Manager client.
+    client = secretmanager.SecretManagerServiceClient()
+
+    # Build the resource name of the secret version.
+    name = f"projects/{project_id}/secrets/{secret_id}/versions/latest"
+
+    # Access the secret version.
+    response = client.access_secret_version(request={"name": name})
+
+    # Verify payload checksum.
+    crc32c = google_crc32c.Checksum()
+    crc32c.update(response.payload.data)
+    if response.payload.data_crc32c != int(crc32c.hexdigest(), 16):
+        print("Data corruption detected.")
+        return response
+
+    # Print the secret payload.
+    #
+    # WARNING: Do not print the secret in a production environment - this
+    # snippet is showing how to access the secret material.
+    payload = response.payload.data.decode("UTF-8")
+    print("Plaintext: {}".format(payload))
+
+def cache_tokens(project_id, access_token, refresh_token, company_name):
+    company_token = f"{company_name}_token"
+    payload = f"{access_token} {refresh_token}"
+    try:
+        create_secret(project_id=project_id, secret_id=company_token)
+        add_secret_version(project_id=project_id, secret_id=company_token, payload=payload)
+    except:
+        add_secret_version(project_id=project_id, secret_id=company_token, payload=payload)
