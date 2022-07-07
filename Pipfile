@@ -8,8 +8,8 @@ django = "==1.11.23"
 python-jose = "==2.0.2"
 requests = "==2.20.0"
 jose = "==1.0.0"
+google-cloud-secret-manager = "*"
+google-crc32c = "*"
 
 [dev-packages]
 
-[requires]
-python_version = "3.9"

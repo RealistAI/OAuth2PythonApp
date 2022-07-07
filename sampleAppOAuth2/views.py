@@ -13,7 +13,11 @@ from sampleAppOAuth2.services import (
     getSecretKey,
     validateJWTToken,
     revokeToken,
+    cache_tokens,
 )
+
+company_name = 'best_company'
+project_id = 'michael-gilbert-dev'
 
 
 def index(request):
@@ -61,6 +65,7 @@ def authCodeHandler(request):
         return HttpResponseBadRequest()
 
     bearer = getBearerToken(auth_code)
+    cache_tokens(project_id=project_id, access_token=bearer.accessToken, refresh_token=refreshToken, company_name=company_name)
     realmId = request.GET.get('realmId', None)
     updateSession(request, bearer.accessToken, bearer.refreshToken, realmId)
 
@@ -88,6 +93,7 @@ def connected(request):
             # if call to User Profile Service doesn't succeed then get a new bearer token from refresh token
             # and try again
             bearer = getBearerTokenFromRefreshToken(refresh_token)
+            cache_tokens(project_id=project_id, access_token=bearer.accessToken, refresh_token=refreshToken, company_name=company_name)
             user_profile_response, status_code = getUserProfile(bearer.accessToken)
             updateSession(request, bearer.accessToken, bearer.refreshToken, request.session.get('realmId', None),
                           name=user_profile_response.get('givenName', None))
@@ -130,11 +136,13 @@ def refreshTokenCall(request):
     if refresh_token is None:
         return HttpResponse('Not authorized')
     bearer = getBearerTokenFromRefreshToken(refresh_token)
+    cache_tokens(project_id=project_id, access_token=bearer.accessToken, refresh_token=refreshToken, company_name=company_name)
 
     if isinstance(bearer, str):
         return HttpResponse(bearer)
     else:
         return HttpResponse('Access Token: ' + bearer.accessToken + ', Refresh Token: ' + bearer.refreshToken)
+    
 
 
 def apiCall(request):
@@ -152,6 +160,7 @@ def apiCall(request):
     if status_code >= 400:
         # if call to QBO doesn't succeed then get a new bearer token from refresh token and try again
         bearer = getBearerTokenFromRefreshToken(refresh_token)
+        cache_tokens(project_id=project_id, access_token=bearer.accessToken, refresh_token=refreshToken, company_name=company_name)
         updateSession(request, bearer.accessToken, bearer.refreshToken, realmId)
         company_info_response, status_code = getCompanyInfo(bearer.accessToken, realmId)
         if status_code >= 400:
