@@ -254,10 +254,13 @@ def access_secret_version(secret_id):
     print("Plaintext: {}".format(payload))
 
 def cache_tokens(project_id, access_token, refresh_token, company_name):
-    company_token = f"{company_name}_token"
-    payload = f"{access_token} {refresh_token}"
+    refresh_token_secret = f"{company_name}_refresh_token"
+    access_token_secret = f"{company_name}_access_token" 
     try:
-        create_secret(project_id=project_id, secret_id=company_token)
-        add_secret_version(project_id=project_id, secret_id=company_token, payload=payload)
+        create_secret(project_id=project_id, secret_id=access_token_secret)
+        create_secret(project_id=project_id, secret_id=refresh_token_secret)
+        add_secret_version(project_id=project_id, secret_id=access_token_secret, payload=access_token)
+        add_secret_version(project_id=project_id, secret_id=refresh_token_secret, payload=refresh_token)
     except:
-        add_secret_version(project_id=project_id, secret_id=company_token, payload=payload)
+        add_secret_version(project_id=project_id, secret_id=access_token_secret, payload=access_token)
+        add_secret_version(project_id=project_id, secret_id=refresh_token_secret, payload=refresh_token)

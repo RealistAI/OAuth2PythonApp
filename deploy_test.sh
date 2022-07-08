@@ -1,1 +1,3 @@
-gcloud run deploy oauth2app --region us-central1 --source . --memory 2Gi --timeout=20m --service-account=whitestone-invoker@michael-gilbert-dev.iam.gserviceaccount.com
+gcloud builds submit --tag gcr.io/michael-gilbert-dev/oauth2app1.0.0 .;
+gcloud run deploy --image=gcr.io/michael-gilbert-dev/oauth2app1.0.0 --platform managed --region us-central1;
+
