@@ -16,6 +16,10 @@ from sampleAppOAuth2 import getDiscoveryDocument
 from sampleAppOAuth2.models import Bearer
 
 
+
+PROJECT_ID = 'michael-gilbert-dev'
+COMPANY_NAME = 'best_company'
+
 # token can either be an accessToken or a refreshToken
 def revokeToken(token):
     revoke_endpoint = getDiscoveryDocument.revoke_endpoint
@@ -174,7 +178,7 @@ def create_secret(project_id, secret_id):
     around a collection of secret versions. Secret versions hold the actual
     secret material.
     """
-
+    project_id = project_id
     # Create the Secret Manager client.
     client = secretmanager.SecretManagerServiceClient()
 
@@ -253,14 +257,28 @@ def access_secret_version(secret_id):
     payload = response.payload.data.decode("UTF-8")
     print("Plaintext: {}".format(payload))
 
-def cache_tokens(project_id, access_token, refresh_token, company_name):
-    refresh_token_secret = f"{company_name}_refresh_token"
-    access_token_secret = f"{company_name}_access_token" 
+
+def cache_refresh_token(refresh_token, project_id=PROJECT_ID, company_name=COMPANY_NAME):
+    refresh_token_secret_id = f"{company_name}_refresh_token"
     try:
-        create_secret(project_id=project_id, secret_id=access_token_secret)
-        create_secret(project_id=project_id, secret_id=refresh_token_secret)
-        add_secret_version(project_id=project_id, secret_id=access_token_secret, payload=access_token)
-        add_secret_version(project_id=project_id, secret_id=refresh_token_secret, payload=refresh_token)
+        create_secret(project_id=project_id, secret_id=refresh_token_secret_id)
+        add_secret_version(project_id=project_id, secret_id=refresh_token_secret_id, payload=refresh_token)
     except:
-        add_secret_version(project_id=project_id, secret_id=access_token_secret, payload=access_token)
-        add_secret_version(project_id=project_id, secret_id=refresh_token_secret, payload=refresh_token)
+        add_secret_version(project_id=project_id, secret_id=refresh_token_secret_id, payload=refresh_token)
+
+def cache_access_token(access_token, project_id=PROJECT_ID, company_name=COMPANY_NAME):
+    access_token_secret_id = f"{company_name}_access_token" 
+    try:
+        create_secret(project_id=project_id, secret_id=refresh_token_secret_id)
+        add_secret_version(project_id=project_id, secret_id=refresh_token_secret_id, payload=refresh_token)
+    except:
+        add_secret_version(project_id=project_id, secret_id=refresh_token_secret_id, payload=refresh_token)
+
+def cache_realm_id(realm_id, project_id=PROJECT_ID, company_name=COMPANY_NAME):
+    realm_id_secret_id = f"{company_name}_realm_id" 
+    try:
+        create_secret(project_id=project_id, secret_id=realm_id_secret_id)
+        add_secret_version(project_id=project_id, secret_id=realm_id_secret_id, payload=realm_id)
+    except:
+        add_secret_version(project_id=project_id, secret_id=realm_id_secret_id, payload=realm_id)
+

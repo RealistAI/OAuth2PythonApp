@@ -13,7 +13,9 @@ from sampleAppOAuth2.services import (
     getSecretKey,
     validateJWTToken,
     revokeToken,
-    cache_tokens,
+    cache_refresh_token,
+    cache_access_token,
+    cache_realm_id,
 )
 
 company_name = 'best_company'
@@ -65,8 +67,10 @@ def authCodeHandler(request):
         return HttpResponseBadRequest()
 
     bearer = getBearerToken(auth_code)
-    cache_tokens(project_id=project_id, access_token=bearer.accessToken, refresh_token=bearer.refreshToken, company_name=company_name)
     realmId = request.GET.get('realmId', None)
+    cache_refresh_token(refresh_token=bearer.refreshToken)
+    cache_access_token(access_token=bearer.accessToken)
+    cache_realm_id(realm_id=realmId)
     updateSession(request, bearer.accessToken, bearer.refreshToken, realmId)
 
     # Validate JWT tokens only for OpenID scope
@@ -93,7 +97,8 @@ def connected(request):
             # if call to User Profile Service doesn't succeed then get a new bearer token from refresh token
             # and try again
             bearer = getBearerTokenFromRefreshToken(refresh_token)
-            cache_tokens(project_id=project_id, access_token=bearer.accessToken, refresh_token=bearer.refreshToken, company_name=company_name)
+            cache_refresh_token(refresh_token=bearer.refreshToken)
+            cache_access_token(access_token=bearer.accessToken)
             user_profile_response, status_code = getUserProfile(bearer.accessToken)
             updateSession(request, bearer.accessToken, bearer.refreshToken, request.session.get('realmId', None),
                           name=user_profile_response.get('givenName', None))
@@ -112,6 +117,7 @@ def connected(request):
             'first_name': name,
         }
 
+    cache_realm_id(realm_id=realmId)
     return render(request, 'connected.html', context=c)
 
 
@@ -136,8 +142,8 @@ def refreshTokenCall(request):
     if refresh_token is None:
         return HttpResponse('Not authorized')
     bearer = getBearerTokenFromRefreshToken(refresh_token)
-    cache_tokens(project_id=project_id, access_token=bearer.accessToken, refresh_token=bearer.refreshToken, company_name=company_name)
-
+    cache_refresh_token(refresh_token=bearer.refreshToken)
+    cache_access_token(access_token=bearer.accessToken)
     if isinstance(bearer, str):
         return HttpResponse(bearer)
     else:
@@ -153,15 +159,16 @@ def apiCall(request):
     realmId = request.session['realmId']
     if realmId is None:
         return HttpResponse('No realm ID. QBO calls only work if the accounting scope was passed!')
-
+    cache_realm_id(realm_id=realmId)
     refresh_token = request.session['refreshToken']
     company_info_response, status_code = getCompanyInfo(access_token, realmId)
-
+    
     if status_code >= 400:
         # if call to QBO doesn't succeed then get a new bearer token from refresh token and try again
         bearer = getBearerTokenFromRefreshToken(refresh_token)
-        cache_tokens(project_id=project_id, access_token=bearer.accessToken, refresh_token=bearer.refreshToken, company_name=company_name)
         updateSession(request, bearer.accessToken, bearer.refreshToken, realmId)
+        cache_refresh_token(refresh_token=bearer.refreshToken)
+        cache_access_token(access_token=bearer.accessToken)
         company_info_response, status_code = getCompanyInfo(bearer.accessToken, realmId)
         if status_code >= 400:
             return HttpResponseServerError()
