@@ -1,0 +1,128 @@
+*,
+*:before,
+*:after
+  box-sizing: border-box
+  -webkit-font-smoothing: antialiased
+  -moz-osx-font-smoothing: grayscale
+  -webkit-text-size-adjust: 100%
+  prefix(tap-highlight-color, rgba(0,0,0,0.5))
+
+
+
+html,
+body
+  height: 100%
+
+html
+  font-size: 16px
+  line-height: 1.4em
+
+body
+  font-family: var(--font-family-primary)
+  font-weight: 400
+  color: var(--color-light)
+  background: var(--color-dark-gray)
+  scroll-behavior: smooth
+
+h1,
+h2,
+h3,
+h4,
+h5
+  font-weight: 700
+  margin-bottom: $spacing
+
+p
+  font-size: var(--font-size-body-1)
+  line-height: 1.4em
+  margin-bottom: $spacing
+  color: var(--color-light-gray)
+
+a
+  text-decoration: none
+
+hr
+  display: block
+  height: 3px
+  border: none
+  margin: ($spacing * 2) 0
+  background: rgba(#fff, 0.05)
+  // background: linear-gradient(to right, var(--color-brand-primary), var(--color-brand-secondary))
+
+b
+  font-weight: 700
+
+ol
+  counter-reset: ol-counter;
+  list-style: decimal
+  list-position: outside
+  margin-left: $spacing
+
+pre
+  white-space: pre-wrap
+  word-wrap: break-word
+
+input,
+select,
+textarea,
+button
+  font-family: var(--font-family-primary)
+  color: var(--color-light)
+  font-size: var(--font-size-body-1)
+
+input[type=search]
+  -webkit-appearance: none
+
+/* clears the 'X' from Internet Explorer */
+input[type=search]::-ms-clear
+  display: none
+  width: 0
+  height: 0
+input[type=search]::-ms-reveal
+  display: none
+  width: 0
+  height: 0
+
+/* clears the 'X' from Chrome */
+input[type="search"]::-webkit-search-decoration,
+input[type="search"]::-webkit-search-cancel-button,
+input[type="search"]::-webkit-search-results-button,
+input[type="search"]::-webkit-search-results-decoration
+  display: none
+
+input[type=number]
+  -moz-appearance: textfield
+
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button
+    -webkit-appearance: none
+    margin: 0
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active
+  -webkit-transition: background-color 9999s ease-out
+  -webkit-transition-delay: 9999s
+  -webkit-text-fill-color: var(--color-light) !important
+
+*::-webkit-input-placeholder
+  color: var(--color-light-gray)
+  opacity: 1
+  font-size: 0.8rem
+  line-height: 1.2rem
+
+*:-ms-input-placeholder
+  color: var(--color-light-gray)
+  opacity: 1
+  font-size: 0.8rem
+
+*::-moz-placeholder
+  color: var(--color-light-gray)
+  opacity: 1
+  font-size: 0.8rem
+
+*:-moz-placeholder
+  color: var(--color-light-gray)
+  opacity: 1
+  font-size: 0.8rem

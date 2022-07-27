@@ -1,0 +1,109 @@
+.layout
+  display: flex
+
+.layout--fill-height
+  min-height: 100%
+  align-items: center
+
+.layout--full-screen
+  min-height: 75vh
+  align-items: center
+
+.layout--full-screen-actual
+  min-height: calc(100vh - var(--header-height))
+  align-items: center
+
+.layout--horizontal
+  align-items: center
+
+  > *
+    margin-left: $spacing !important
+    margin-right: $spacing !important
+
+    &:first-child
+      margin-left: 0 !important
+    
+    &:last-child
+      margin-right: 0 !important
+
+  &.layout--less-spacing
+    > *
+      margin-left: $spacing * 0.5 !important
+      margin-right: $spacing * 0.5 !important
+
+      &:first-child
+        margin-left: 0 !important
+      
+      &:last-child
+        margin-right: 0 !important
+
+.layout--horizontal-wrap
+  align-items: center
+  flex-wrap: wrap
+
+  > *
+    margin-right: $spacing * 2
+
+.layout--horizontal-equal
+  > *
+    flex: 1
+    width: auto
+    min-width: 0
+
+.layout--icon
+  align-items: center
+  margin: 0 0 $spacing
+
+  *
+    margin: 0
+
+  .icon
+    margin: 0 $spacing 0 0
+
+.layout--inline
+  display: inline-flex
+
+
+
+.layout__grow
+  flex-grow: 1
+
+
+
+@media (max-width: 1050px)
+  .layout--stack-1050
+    flex-direction: column
+
+    > .layout__section
+      margin: 0 0 $spacing
+
+    > *
+      margin-left: 0 !important
+      margin-right: 0 !important
+
+    &.layout--stack-reverse
+      flex-direction: column-reverse
+
+
+
+
+@media (max-width: 650px)
+  .layout--stack-650
+    flex-direction: column
+
+    > .layout__section
+      margin: 0 0 $spacing
+
+    > *
+      margin-left: 0 !important
+      margin-right: 0 !important
+
+    &.layout--stack-reverse
+      flex-direction: column-reverse
+
+
+
+@media (max-width: 650px)
+  .layout__expand-650
+    width: 100%
+    margin-right: 0

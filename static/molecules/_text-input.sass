@@ -1,0 +1,117 @@
+.text-input
+  margin: 0 0 $spacing
+  position: relative
+  text-align: left
+
+
+
+.text-input__input
+  display: block
+  position: relative
+  z-index: 10
+  width: 100%
+  height: var(--input-height)
+  margin: 0
+  padding: ($spacing * 1.1) ($spacing * 0.75) 0
+  font-size: 16px
+  outline: none
+  color: var(--color-light)
+  background: var(--color-gray)
+  border: none
+  box-shadow: 0 0 4px rgba(#000, 0.2)
+  border-radius: 6px
+  cursor: text
+  letter-spacing: 1px
+  -webkit-appearance: none
+
+  &[disabled]
+    cursor: not-allowed
+
+  &:focus
+    box-shadow: 0 0 8px rgba(#000, 0.3), inset 0 0 20px rgba(#fff, 0.05)
+
+  &::-webkit-input-placeholder
+    opacity: 0
+    transition: 200ms
+  &:-ms-input-placeholder
+    opacity: 0
+    transition: 200ms
+  &::-moz-placeholder
+    opacity: 0
+    transition: 200ms
+  &:-moz-placeholder
+    opacity: 0
+    transition: 200ms
+
+  &:focus
+    &::-webkit-input-placeholder
+      opacity: 1
+    &:-ms-input-placeholder
+      opacity: 1
+    &::-moz-placeholder
+      opacity: 1
+    &:-moz-placeholder
+      opacity: 1
+
+  .text-input--has-icon &
+    padding-left: var(--input-height)
+    background-size: var(--input-height) 100%
+
+
+
+.text-input__label
+  display: inline-block
+  position: absolute
+  z-index: 15
+  top: 0
+  left: 0
+  bottom: 0
+  padding: 0 $spacing
+  font-size: 16px
+  line-height: var(--input-height)
+  font-weight: 400
+  color: var(--color-light-gray)
+  cursor: text
+  user-select: none
+  pointer-events: none
+  white-space: nowrap
+  transition: transform 200ms, font-size 200ms
+
+  .text-input--third-party &
+    display: none
+
+  .text-input__input:not(:placeholder-shown) + &,
+  .text-input__input:focus + &
+    font-size: 0.8rem
+    transform: translateY(-0.8rem) translateX(-0.25rem)
+
+  .text-input--has-icon .text-input__input:not(:placeholder-shown) + &,
+  .text-input--has-icon .text-input__input:focus + &
+    transform: translateY(-0.8rem)
+
+  .text-input--has-icon &
+    padding-left: var(--input-height)
+
+
+
+.text-input__icon
+  display: none
+  width: var(--input-height)
+  height: var(--input-height)
+  position: absolute
+  z-index: 15
+  left: 1px
+  top: 1px
+  pointer-events: none
+
+  .text-input--has-icon &
+    display: block
+
+  .icon
+    display: block
+    width: 100%
+    font-size: 1.2rem
+    top: 0
+    line-height: var(--input-height)
+    text-align: center
+    color: var(--color-light-gray)

@@ -1,0 +1,92 @@
+.pricing
+  display: flex
+  align-items: center
+
+
+
+.pricing__option
+  flex: 1
+  width: auto
+  min-width: 0
+  background: var(--color-gray)
+  margin: 0 $spacing $spacing
+  padding: ($spacing * 2) ($spacing * 2) $spacing
+  border-radius: 0.5rem
+  box-shadow: 0 0 2rem rgba(0, 0, 0, 0.2)
+  animation: growIn 500ms
+
+  hr
+    margin: $spacing 0
+
+  &:first-child
+    box-shadow: 0 0 2rem rgba(0, 0, 0, 0.3), inset 0 0 100px -75px var(--color-brand-primary)
+    margin-left: 0
+
+    hr
+      background: var(--color-brand-primary)
+
+  &:last-child
+    box-shadow: 0 0 2rem rgba(0, 0, 0, 0.3), inset 0 0 100px -75px var(--color-brand-secondary)
+    margin-right: 0
+
+    hr
+      background: var(--color-brand-secondary)
+
+
+
+.pricing__or
+  font-size: var(--font-size-heading-2)
+  color: light-gray
+  padding: 0 $spacing
+  font-weight: 300
+
+
+
+.pricing__cost
+  display: flex
+  align-items: center
+  justify-content: center
+  font-size: var(--font-size-heading-1)
+  line-height: 1.2em
+  font-weight: 700
+  color: var(--color-light)
+  margin: 0 0 ($spacing * 1)
+  
+  > *
+    display: block
+    padding: 0 ($spacing * 0.5)
+
+  s
+    font-weight: 300
+    font-size: var(--font-size-heading-3)
+    color: var(--color-light-gray)
+
+
+
+.pricing__cents
+  position: relative
+  top: -1.2rem
+  display: inline-block
+  margin: 0 0 0 0.15rem
+  font-size: var(--font-size-heading-4)
+  letter-spacing: 0.1rem
+  line-height: 1.2em
+
+
+
+@media (max-width: 1050px)
+  .pricing
+    flex-direction: column
+
+  .pricing__option
+    margin-left: 0
+    margin-right: 0
+    min-width: 400px
+
+
+
+
+@media (max-width: 500px)
+  .pricing__option
+    min-width: unset
+    width: 100%

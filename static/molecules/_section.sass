@@ -1,0 +1,35 @@
+.section
+  position: relative
+  width: 100%
+  padding: ($spacing * 4) ($spacing * 4) ($spacing * 3)
+  background-size: auto 100%
+  overflow: hidden
+
+  &.footer
+    padding-top: ($spacing * 2)
+    padding-bottom: $spacing
+
+.section--dark
+  background: var(--color-dark)
+
+  hr
+    background: var(--color-dark-gray)
+    height: 2px
+
+.section--gradient-bg
+  background: radial-gradient(ellipse at bottom, var(--color-gray), var(--color-dark-gray) 70%) no-repeat
+
+.section--border
+  border-bottom: 3px solid rgba(#fff, 0.05)
+  // border-image: linear-gradient(to right, var(--color-brand-primary), var(--color-brand-secondary)) 1
+  // border-bottom: 3?px solid var(--color-light-gray)
+  // box-shadow: 0 0 30px rgba(#000, 0.5)
+
+
+@media (max-width: 1050px)
+  .section
+    padding: ($spacing * 2) ($spacing * 2) $spacing
+  
+  .section--gradient-bg
+    background: linear-gradient(to bottom, var(--color-dark-gray), var(--color-gray))
+

@@ -12,8 +12,8 @@ from datetime import datetime
 
 from django.conf import settings
 
-from sampleAppOAuth2 import getDiscoveryDocument
-from sampleAppOAuth2.models import Bearer
+from RealistBRAIN import getDiscoveryDocument
+from RealistBRAIN.models import Bearer
 
 
 
@@ -269,10 +269,10 @@ def cache_refresh_token(refresh_token, project_id=PROJECT_ID, company_name=COMPA
 def cache_access_token(access_token, project_id=PROJECT_ID, company_name=COMPANY_NAME):
     access_token_secret_id = f"{company_name}_access_token" 
     try:
-        create_secret(project_id=project_id, secret_id=refresh_token_secret_id)
-        add_secret_version(project_id=project_id, secret_id=refresh_token_secret_id, payload=refresh_token)
+        create_secret(project_id=project_id, secret_id=access_token_secret_id)
+        add_secret_version(project_id=project_id, secret_id=access_token_secret_id, payload=access_token)
     except:
-        add_secret_version(project_id=project_id, secret_id=refresh_token_secret_id, payload=refresh_token)
+        add_secret_version(project_id=project_id, secret_id=access_token_secret_id, payload=access_token)
 
 def cache_realm_id(realm_id, project_id=PROJECT_ID, company_name=COMPANY_NAME):
     realm_id_secret_id = f"{company_name}_realm_id" 
