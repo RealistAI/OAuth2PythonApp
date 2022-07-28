@@ -16,6 +16,7 @@ from RealistBRAIN.services import (
     cache_refresh_token,
     cache_access_token,
     cache_realm_id,
+    access_secret_version,
 )
 
 company_name = 'whitestone'
@@ -28,26 +29,29 @@ def index(request):
 
 def connectToQuickbooks(request):
     url = getDiscoveryDocument.auth_endpoint
+    CLIENT_ID = access_secret_version(secret_id='brain_client_id')
     params = {'scope': settings.ACCOUNTING_SCOPE, 'redirect_uri': settings.REDIRECT_URI,
-              'response_type': 'code', 'state': get_CSRF_token(request), 'client_id': settings.CLIENT_ID}
+              'response_type': 'code', 'state': get_CSRF_token(request), 'client_id': CLIENT_ID}
     url += '?' + urllib.parse.urlencode(params)
     return redirect(url)
 
 
 def signInWithIntuit(request):
     url = getDiscoveryDocument.auth_endpoint
+    CLIENT_ID = access_secret_version(secret_id='brain_client_id')
     scope = ' '.join(settings.OPENID_SCOPES)  # Scopes are required to be sent delimited by a space
     params = {'scope': scope, 'redirect_uri': settings.REDIRECT_URI,
-              'response_type': 'code', 'state': get_CSRF_token(request), 'client_id': settings.CLIENT_ID}
+              'response_type': 'code', 'state': get_CSRF_token(request), 'client_id': CLIENT_ID}
     url += '?' + urllib.parse.urlencode(params)
     return redirect(url)
 
 
 def getAppNow(request):
     url = getDiscoveryDocument.auth_endpoint
+    CLIENT_ID = access_secret_version(secret_id='brain_client_id')
     scope = ' '.join(settings.GET_APP_SCOPES)  # Scopes are required to be sent delimited by a space
     params = {'scope': scope, 'redirect_uri': settings.REDIRECT_URI,
-              'response_type': 'code', 'state': get_CSRF_token(request), 'client_id': settings.CLIENT_ID}
+              'response_type': 'code', 'state': get_CSRF_token(request), 'client_id': CLIENT_ID}
     url += '?' + urllib.parse.urlencode(params)
     return redirect(url)
 

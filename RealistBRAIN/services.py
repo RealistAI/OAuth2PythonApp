@@ -18,12 +18,14 @@ from RealistBRAIN.models import Bearer
 
 
 PROJECT_ID = 'michael-gilbert-dev'
-COMPANY_NAME = 'best_company'
+COMPANY_NAME = 'whitestone'
 
 # token can either be an accessToken or a refreshToken
 def revokeToken(token):
     revoke_endpoint = getDiscoveryDocument.revoke_endpoint
-    auth_header = 'Basic ' + stringToBase64(settings.CLIENT_ID + ':' + settings.CLIENT_SECRET)
+    CLIENT_ID = access_secret_version(secret_id='brain_client_id')
+    CLIENT_SECRET = access_secret_version(secret_id='brain_client_secret')
+    auth_header = 'Basic ' + stringToBase64(CLIENT_ID + ':' + CLIENT_SECRET)
     headers = {'Accept': 'application/json', 'content-type': 'application/json', 'Authorization': auth_header}
     payload = {'token': token}
     r = requests.post(revoke_endpoint, json=payload, headers=headers)
@@ -38,7 +40,9 @@ def revokeToken(token):
 
 def getBearerToken(auth_code):
     token_endpoint = getDiscoveryDocument.token_endpoint
-    auth_header = 'Basic ' + stringToBase64(settings.CLIENT_ID + ':' + settings.CLIENT_SECRET)
+    CLIENT_ID = access_secret_version(secret_id='brain_client_id')
+    CLIENT_SECRET = access_secret_version(secret_id='brain_client_secret')
+    auth_header = 'Basic ' + stringToBase64(CLIENT_ID + ':' + CLIENT_SECRET)
     headers = {'Accept': 'application/json', 'content-type': 'application/x-www-form-urlencoded',
                'Authorization': auth_header}
     payload = {
@@ -62,7 +66,9 @@ def getBearerToken(auth_code):
 
 def getBearerTokenFromRefreshToken(refresh_Token):
     token_endpoint = getDiscoveryDocument.token_endpoint
-    auth_header = 'Basic ' + stringToBase64(settings.CLIENT_ID + ':' + settings.CLIENT_SECRET)
+    CLIENT_ID = access_secret_version(secret_id='brain_client_id')
+    CLIENT_SECRET = access_secret_version(secret_id='brain_client_secret')
+    auth_header = 'Basic ' + stringToBase64(CLIENT_ID + ':' + CLIENT_SECRET)
     headers = {'Accept': 'application/json', 'content-type': 'application/x-www-form-urlencoded',
                'Authorization': auth_header}
     payload = {
@@ -126,7 +132,7 @@ def validateJWTToken(token):
 
     if idTokenPayload['iss'] != settings.ID_TOKEN_ISSUER:
         return False
-    elif idTokenPayload['aud'][0] != settings.CLIENT_ID:
+    elif idTokenPayload['aud'][0] != CLIENT_ID:
         return False
     elif idTokenPayload['exp'] < current_time:
         return False
@@ -228,12 +234,11 @@ def add_secret_version(project_id, secret_id, payload):
     # Print the new secret version name.
     print("Added secret version: {}".format(response.name))
 
-def access_secret_version(secret_id):
+def access_secret_version(secret_id, project_id=PROJECT_ID):
     """
     Access the payload for the given secret version if one exists. The version
     can be a version number as a string (e.g. "5") or an alias (e.g. "latest").
     """
-    project_id = 'michael-gilbert-dev'
     # Create the Secret Manager client.
     client = secretmanager.SecretManagerServiceClient()
 
@@ -249,14 +254,10 @@ def access_secret_version(secret_id):
     if response.payload.data_crc32c != int(crc32c.hexdigest(), 16):
         print("Data corruption detected.")
         return response
-
-    # Print the secret payload.
-    #
-    # WARNING: Do not print the secret in a production environment - this
-    # snippet is showing how to access the secret material.
+    
     payload = response.payload.data.decode("UTF-8")
-    print("Plaintext: {}".format(payload))
-
+    payload = payload.strip()
+    return payload
 
 def cache_refresh_token(refresh_token, project_id=PROJECT_ID, company_name=COMPANY_NAME):
     refresh_token_secret_id = f"{company_name}_refresh_token"
