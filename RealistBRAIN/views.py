@@ -4,8 +4,8 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse, HttpResponseBadRequest, HttpResponseServerError
 from django.conf import settings
 
-from sampleAppOAuth2 import getDiscoveryDocument
-from sampleAppOAuth2.services import (
+from RealistBRAIN import getDiscoveryDocument
+from RealistBRAIN.services import (
     getCompanyInfo,
     getBearerTokenFromRefreshToken,
     getUserProfile,
@@ -18,7 +18,7 @@ from sampleAppOAuth2.services import (
     cache_realm_id,
 )
 
-company_name = 'best_company'
+company_name = 'whitestone'
 project_id = 'michael-gilbert-dev'
 
 
@@ -56,7 +56,7 @@ def authCodeHandler(request):
     state = request.GET.get('state', None)
     error = request.GET.get('error', None)
     if error == 'access_denied':
-        return redirect('sampleAppOAuth2:index')
+        return redirect('RealistBRAIN:index')
     if state is None:
         return HttpResponseBadRequest()
     elif state != get_CSRF_token(request):  # validate against CSRF attacks
@@ -78,9 +78,9 @@ def authCodeHandler(request):
         if not validateJWTToken(bearer.idToken):
             return HttpResponse('JWT Validation failed. Please try signing in again.')
         else:
-            return redirect('sampleAppOAuth2:connected')
+            return redirect('RealistBRAIN:connected')
     else:
-        return redirect('sampleAppOAuth2:connected')
+        return redirect('RealistBRAIN:connected')
 
 
 def connected(request):
@@ -136,6 +136,11 @@ def disconnect(request):
     request.session.flush()
     return HttpResponse(revoke_response)
 
+def revoke_token(request):
+    return render(request, 'revoke_token.html')
+
+def access_revoked(request):
+    return render(request, 'access_revoked.html')
 
 def refreshTokenCall(request):
     refresh_token = request.session.get('refreshToken', None)

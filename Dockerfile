@@ -1,6 +1,6 @@
 FROM python:3.9
 
-ENV APP_HOME /sampleAppOAuth2
+ENV APP_HOME /RealistBRAIN
 WORKDIR $APP_HOME
 COPY . ./
 

@@ -1,0 +1,79 @@
+{% extends 'layout.html' %}
+{% load static %}
+{% block content %}
+   <br>
+   <br>
+   <br>
+   <br>
+   <br>
+   <br>
+<html>
+<div class="section section--gradient-bg">
+  <div class="container">
+    <div class="layout layout--horizontal layout--stack-1050 layout--full-screen">
+      <div class="layout__section layout__grow">
+<head>
+	<b><h1 class='title title--1;' style='color:white;font-size:32px'>Revoke token</h1></b>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script>
+        if (window.opener) {
+            window.opener.location.href = '/RealistBRAIN/connected'
+            window.close()
+        }
+    </script>
+    <script>
+        function revokeCall() {
+            $("#result").html('Loading...')
+            $.get("/RealistBRAIN/disconnect", function (data) {
+                $("#result").html(data)
+            })
+	    window.location.href ='access_revoked';
+        }
+    </script>
+</head>
+    <body>
+        <small><p style='color:white;font-size:16px'>Do you want to revoke Realist AI's access to your account?</p></small>
+    <div>	
+    <style>
+      .button {
+        background-color: #191970;
+        color: none;
+        text-align: center;
+        text-decoration: none;
+        font-size: 16px;
+        display: inline-block;
+            }
+    </style>
+    <BUTTON style='border-radius:5px; height:50px; width:50px; background-color: #191970; color:white' onclick="revokeCall()">Yes</button>
+    <style>
+      .button {
+        background-color: #191970;
+        color: none;
+        text-align: center;
+        text-decoration: none;
+        font-size: 16px;
+        display: inline-block;
+            }
+    </style>
+    <BUTTON style='border-radius:5px; height:50px; width:50px; background-color: #191970; color:white' value="Go back!" onclick="history.back()">No</button>
+    <div><code id="result"></code></div>
+    </div>
+    </body>
+     </div>
+    </div>
+  </div>
+</div>
+</html>
+{% endblock %}
+   <br>
+   <br>
+   <br>
+   <br>
+   <br>
+   <br>
+   <br>
+   <br>
+   <br>
+   <br>
+   <br>
+   <br><br><br><br>

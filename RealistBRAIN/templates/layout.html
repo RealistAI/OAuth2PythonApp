@@ -1,0 +1,67 @@
+ <!DOCTYPE html>
+ {% load static %}
+  <script src="https://cdn.websitepolicies.io/lib/cookieconsent/cookieconsent.min.js" defer></script><script>window.addEventListener("load",function(){window.wpcc.init({"border":"thin","corners":"small","colors":{"popup":{"background":"#606060","text":"#ffffff","border":"#f9f9f9"},"button":{"background":"#f9f9f9","text":"#000000"}},"position":"bottom-right","content":{"href":"www.realist.ai"}})});</script>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1.0">
+
+    {% block meta %}
+    <title>B.R.A.I.N By Realist AI</title>
+        <link rel="icon" href="/images/favicon.png">
+        <meta property="og:url" content="https://oauth2app100-b5p6wiz3ka-uc.a.run.app/RealistBRAIN/" />
+        <meta property="og:image" content="https://realist.ai/images/realist-logo.svg" />
+    {% endblock %}
+
+    <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="{% static "more_styling.css" %}"/> 
+    <script src="/dist/app-{{package.version}}.js"></script>
+    <script src="https://js.stripe.com/v3/"></script>
+    <script src="https://cdn.jsdelivr.net/npm/seamless-scroll-polyfill@1.0.0/dist/es5/seamless.auto-polyfill.min.js" data-seamless></script>
+
+    {% block head %}{% endblock %}
+  </head>
+  <body>
+    <div class="wrapper">
+      <div class="header">
+        <div class="header__container">
+          <a class="header__logo" href="/">
+            <!-- <picture>
+              <source media="(min-width: 500px)" srcset="/images/real-calc-logo.svg">
+              <img src="/images/real-calc-icon-logo.svg" alt="RealCalc">
+            </picture> -->
+
+            <img src="{% static "realist-logo.png" %}" alt="Realist">
+          </a>
+        </div>
+      </div>
+      <div class="wrapper__content">
+        {% block content %}{% endblock %}
+      </div>
+  
+      {% block footer %}
+        <footer class="footer section section--dark center">
+          <div class="container">
+            <div class="layout layout--horizontal layout--stack-1050">
+              <div class="layout layout--horizontal layout--less-spacing layout__grow">
+                <img class="image image--realist-logo" src="{% static "realist-logo.png" %}" alt="Realist AI">
+              </div>
+              <br>
+	      <br>
+	      <br>
+	      <br>
+	      <br>
+              <div class="center">
+                <p class="smaller" style="color:white">&copy; {{ currentYear }} Realist AI.
+                |
+                <a class="link" style="color:white" href="/privacy">Privacy</a>
+                |
+                <a class="link" style="color:white" href="/terms">Terms</a>
+                </p>
+              </div>
+            </div>
+          </div>
+        </footer>
+      {% endblock %}
+    </div>
+  </body>
+</html>

@@ -1,0 +1,61 @@
+{% extends 'layout.html' %}
+{% load static %}
+{% block content %}
+<html>
+<head>
+    <title style='color:white'>Connected Successfully</title>
+    <script>
+        if (window.opener) {
+            window.opener.location.href = '/RealistBRAIN/connected'
+            window.close()
+        }
+    </script>
+    <script>
+        function apiCall() {
+            $("#result").html('Loading...')
+            $.get("/RealistBRAIN/apiCall", function (data) {
+                $("#result").html(data)
+            })
+        }
+
+        function refreshCall() {
+            $("#result").html('Loading...')
+            $.get("/RealistBRAIN/refreshTokenCall", function (data) {
+                $("#result").html(JSON.stringify(data, null, 2))
+            })
+        }
+
+    </script>
+</head>
+   <br>
+   <br>
+   <br>
+   <br>
+   <br>
+   <br>
+<body>
+<div class="section section--gradient-bg">
+  <div class="container">
+    <div class="layout layout--horizontal layout--stack-1050 layout--full-screen">
+      <div class="layout__section layout__grow">
+<b><h1 class='title title --2;' style='color:white;font-size:32px'>Connected!</h3></b>
+<p style='color:white;font-size:16px'>Thank you for using B.R.A.I.N by Realist AI</p>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>
+{% endblock %}
+   <br>
+   <br>
+   <br>
+   <br>
+   <br>
+   <br>
+   <br>
+   <br>
+   <br>
+   <br>
+   <br>
+   <br><br><br><br>

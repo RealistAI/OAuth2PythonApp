@@ -18,8 +18,12 @@ from django.conf.urls import include, url
 from django.contrib import admin
 from django.views.generic.base import RedirectView
 
+from . import views
+
 urlpatterns = [
-    url(r'^$', RedirectView.as_view(pattern_name='sampleAppOAuth2:index')),
-    url(r'^(?i)sampleAppOAuth2/', include('sampleAppOAuth2.urls', namespace='sampleAppOAuth2')),
+    url(r'^$', RedirectView.as_view(pattern_name='RealistBRAIN:index')),
+    url(r'^(?i)RealistBRAIN/', include('RealistBRAIN.urls', namespace='RealistBRAIN')),
     url(r'^(?i)admin/', admin.site.urls),
+    url(r'^(?i)privacy/?$', views.privacy, name='privacy'),
+    url(r'^(?i)terms/?$',  views.terms, name='terms')
 ]

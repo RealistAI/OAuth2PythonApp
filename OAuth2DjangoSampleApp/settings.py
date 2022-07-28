@@ -36,7 +36,7 @@ ALLOWED_HOSTS = [
 # Application definition
 
 INSTALLED_APPS = [
-    'sampleAppOAuth2',
+    'RealistBRAIN',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -62,7 +62,7 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
-            os.path.join(os.path.dirname(os.path.realpath(__file__)), "../sampleAppOAuth2/templates")
+            os.path.join(os.path.dirname(os.path.realpath(__file__)), "../RealistBRAIN/templates")
         ],
         'APP_DIRS': True,
         'OPTIONS': {
@@ -130,7 +130,7 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, "static"), ]
 DISCOVERY_DOCUMENT = 'https://developer.api.intuit.com/.well-known/openid_sandbox_configuration/'
 CLIENT_ID = 'ABEA0volDZ5N1e2vmG65cnnEXCOneX5ilUpDLIr66OVFrLRm3H'
 CLIENT_SECRET = 'XHoDjP3znIqpCGUGjPxnQD6bDHC9sO3U5eSuAdFd'
-REDIRECT_URI = 'https://oauth2app100-b5p6wiz3ka-uc.a.run.app/sampleAppOAuth2/authCodeHandler'
+REDIRECT_URI = 'https://oauth2app100-b5p6wiz3ka-uc.a.run.app/RealistBRAIN/authCodeHandler'
 ACCOUNTING_SCOPE = 'com.intuit.quickbooks.accounting'
 OPENID_SCOPES = ['openid', 'profile', 'email', 'phone', 'address']
 GET_APP_SCOPES = ['com.intuit.quickbooks.accounting', 'openid', 'profile', 'email', 'phone', 'address']
